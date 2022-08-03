@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "301161445788",
+    "project_id": "sportableapp-63b35",
+    "storage_bucket": "sportableapp-63b35.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:301161445788:android:d2b019c7d016c4aacc7059",
+        "android_client_info": {
+          "package_name": "com.example.sportable"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "301161445788-kctcpjsp62bt4kp5b5objslp8ksp64l3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAWIEXTsyN0fALJc-XdcVFF08n9Eyo3Sh0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "301161445788-kctcpjsp62bt4kp5b5objslp8ksp64l3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
