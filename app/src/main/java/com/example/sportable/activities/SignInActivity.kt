@@ -1,9 +1,10 @@
 package com.example.sportable.activities
 
-import android.content.ContentValues.TAG
+import android.app.Activity
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.graphics.Bitmap
 import android.os.Bundle
+import android.provider.MediaStore
 import android.text.TextUtils
 import android.util.Log
 import android.view.WindowManager
@@ -11,16 +12,23 @@ import android.widget.Toast
 import com.example.sportable.R
 import com.example.sportable.firebase.FirestoreClass
 import com.example.sportable.models.User
+import com.example.sportable.utils.Constants.PLACE_AUTOCOMPLETE_REQUEST_CODE
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
+import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.widget.Autocomplete
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_sign_in.*
 import kotlinx.android.synthetic.main.activity_sign_in.et_email_sign_in
 import kotlinx.android.synthetic.main.activity_sign_in.et_password_sign_in
 import kotlinx.android.synthetic.main.activity_sign_up.*
+import java.io.IOException
 
 class SignInActivity : BaseActivity() {
 
     private lateinit var auth: FirebaseAuth
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_in)
@@ -38,6 +46,22 @@ class SignInActivity : BaseActivity() {
 
         setupActionBar()
     }
+
+    private fun setAddress() {
+        try {
+            val fields = listOf(
+                Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG,
+                Place.Field.ADDRESS
+            )
+            val intent =
+                Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields)
+                    .build(this)
+            startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
 
     fun signInSuccess(user: User){
         hideProgressDialog()
@@ -68,7 +92,7 @@ class SignInActivity : BaseActivity() {
                 .addOnCompleteListener(this) { task ->
                     hideProgressDialog()
                     if (task.isSuccessful) {
-                        FirestoreClass().signInUser(this)
+                        FirestoreClass().loadUserData(this)
                     } else {
                         // If sign in fails, display a message to the user.
                         Log.w("Sign_in", "signInWithEmail:failure", task.exception)

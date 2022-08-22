@@ -3,15 +3,68 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/judso/AndroidStudioProjects/Sportable/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1925" />
+        <entry key="..\:/Users/judso/AndroidStudioProjects/Sportable/app/src/main/res/drawable-v24/white_border_shape_button_rounded.xml" value="0.173" />
+        <entry key="..\:/Users/judso/AndroidStudioProjects/Sportable/app/src/main/res/drawable-xxxhdpi/header_background.xml" value="0.1495" />
+        <entry key="..\:/Users/judso/AndroidStudioProjects/Sportable/app/src/main/res/drawable-xxxhdpi/ic_menu.xml" value="0.128" />
+        <entry key="..\:/Users/judso/AndroidStudioProjects/Sportable/app/src/main/res/drawable-xxxhdpi/ic_vector_add_24dp.xml" value="0.151" />
+        <entry key="..\:/Users/judso/AndroidStudioProjects/Sportable/app/src/main/res/drawable-xxxhdpi/white_rectangle_background.xml" value="0.1335" />
+        <entry key="..\:/Users/judso/AndroidStudioProjects/Sportable/app/src/main/res/drawable/gradient_spinner.xml" value="0.173" />
+        <entry key="..\:/Users/judso/AndroidStudioProjects/Sportable/app/src/main/res/drawable/ic_action_navigation_menu.xml" value="0.128" />
+        <entry key="..\:/Users/judso/AndroidStudioProjects/Sportable/app/src/main/res/drawable/ic_baseline_arrow_drop_down_24.xml" value="0.173" />
+        <entry key="..\:/Users/judso/AndroidStudioProjects/Sportable/app/src/main/res/drawable/ic_black_color_back_24dp.xml" value="0.1495" />
+        <entry key="..\:/Users/judso/AndroidStudioProjects/Sportable/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1925" />
+        <entry key="..\:/Users/judso/AndroidStudioProjects/Sportable/app/src/main/res/drawable/ic_leave_event.xml" value="0.1925" />
+        <entry key="..\:/Users/judso/AndroidStudioProjects/Sportable/app/src/main/res/drawable/ic_nav_sign_out.xml" value="0.1925" />
+        <entry key="..\:/Users/judso/AndroidStudioProjects/Sportable/app/src/main/res/drawable/ic_vector_color_accent_done_24dp.xml" value="0.1225" />
+        <entry key="..\:/Users/judso/AndroidStudioProjects/Sportable/app/src/main/res/drawable/ic_white_color_back_24dp.xml" value="0.1295" />
+        <entry key="..\:/Users/judso/AndroidStudioProjects/Sportable/app/src/main/res/drawable/shape_dialog_rounded.xml" value="0.1295" />
+        <entry key="..\:/Users/judso/AndroidStudioProjects/Sportable/app/src/main/res/drawable/shape_image_view_border.xml" value="0.191" />
+        <entry key="..\:/Users/judso/AndroidStudioProjects/Sportable/app/src/main/res/drawable/spinner_background.xml" value="0.173" />
+        <entry key="..\:/Users/judso/AndroidStudioProjects/Sportable/app/src/main/res/layout/activity_add_sport.xml" value="0.21052631578947367" />
+        <entry key="..\:/Users/judso/AndroidStudioProjects/Sportable/app/src/main/res/layout/activity_all_events.xml" value="0.2" />
+        <entry key="..\:/Users/judso/AndroidStudioProjects/Sportable/app/src/main/res/layout/activity_all_events_drawer.xml" value="0.20964912280701756" />
+        <entry key="..\:/Users/judso/AndroidStudioProjects/Sportable/app/src/main/res/layout/activity_base.xml" value="0.25" />
+        <entry key="..\:/Users/judso/AndroidStudioProjects/Sportable/app/src/main/res/layout/activity_create_event.xml" value="0.21052631578947367" />
+        <entry key="..\:/Users/judso/AndroidStudioProjects/Sportable/app/src/main/res/layout/activity_event_details.xml" value="0.264" />
         <entry key="..\:/Users/judso/AndroidStudioProjects/Sportable/app/src/main/res/layout/activity_intro.xml" value="0.25" />
         <entry key="..\:/Users/judso/AndroidStudioProjects/Sportable/app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="..\:/Users/judso/AndroidStudioProjects/Sportable/app/src/main/res/layout/activity_map.xml" value="0.152" />
+        <entry key="..\:/Users/judso/AndroidStudioProjects/Sportable/app/src/main/res/layout/activity_map_creating_event.xml" value="0.21052631578947367" />
+        <entry key="..\:/Users/judso/AndroidStudioProjects/Sportable/app/src/main/res/layout/activity_my_events.xml" value="0.21052631578947367" />
+        <entry key="..\:/Users/judso/AndroidStudioProjects/Sportable/app/src/main/res/layout/activity_my_profile.xml" value="0.25" />
+        <entry key="..\:/Users/judso/AndroidStudioProjects/Sportable/app/src/main/res/layout/activity_search_on_map.xml" value="0.21052631578947367" />
+        <entry key="..\:/Users/judso/AndroidStudioProjects/Sportable/app/src/main/res/layout/activity_set_my_address.xml" value="0.21052631578947367" />
         <entry key="..\:/Users/judso/AndroidStudioProjects/Sportable/app/src/main/res/layout/activity_sign_in.xml" value="0.25" />
-        <entry key="..\:/Users/judso/AndroidStudioProjects/Sportable/app/src/main/res/layout/activity_sign_up.xml" value="0.25" />
+        <entry key="..\:/Users/judso/AndroidStudioProjects/Sportable/app/src/main/res/layout/activity_sign_up.xml" value="0.264" />
         <entry key="..\:/Users/judso/AndroidStudioProjects/Sportable/app/src/main/res/layout/activity_splash.xml" value="0.25" />
-        <entry key="..\:/Users/judso/AndroidStudioProjects/Sportable/app/src/main/res/layout/app_bar_main.xml" value="0.24895833333333334" />
+        <entry key="..\:/Users/judso/AndroidStudioProjects/Sportable/app/src/main/res/layout/activity_sports.xml" value="0.21052631578947367" />
+        <entry key="..\:/Users/judso/AndroidStudioProjects/Sportable/app/src/main/res/layout/all_events_content.xml" value="0.20964912280701756" />
+        <entry key="..\:/Users/judso/AndroidStudioProjects/Sportable/app/src/main/res/layout/app_bar_all_events.xml" value="0.18671875" />
+        <entry key="..\:/Users/judso/AndroidStudioProjects/Sportable/app/src/main/res/layout/app_bar_filters.xml" value="0.20964912280701756" />
+        <entry key="..\:/Users/judso/AndroidStudioProjects/Sportable/app/src/main/res/layout/app_bar_main.xml" value="0.176" />
+        <entry key="..\:/Users/judso/AndroidStudioProjects/Sportable/app/src/main/res/layout/app_bar_my_events.xml" value="0.2" />
+        <entry key="..\:/Users/judso/AndroidStudioProjects/Sportable/app/src/main/res/layout/app_bar_my_sports.xml" value="0.20964912280701756" />
+        <entry key="..\:/Users/judso/AndroidStudioProjects/Sportable/app/src/main/res/layout/app_bar_sports.xml" value="0.20964912280701756" />
+        <entry key="..\:/Users/judso/AndroidStudioProjects/Sportable/app/src/main/res/layout/dialog_list.xml" value="0.4" />
         <entry key="..\:/Users/judso/AndroidStudioProjects/Sportable/app/src/main/res/layout/dialog_progress.xml" value="0.25" />
+        <entry key="..\:/Users/judso/AndroidStudioProjects/Sportable/app/src/main/res/layout/dialog_sports_sercheable_spinner.xml" value="0.20964912280701756" />
+        <entry key="..\:/Users/judso/AndroidStudioProjects/Sportable/app/src/main/res/layout/drawer_filter.xml" value="0.20964912280701756" />
+        <entry key="..\:/Users/judso/AndroidStudioProjects/Sportable/app/src/main/res/layout/drawer_filterts.xml" value="0.20964912280701756" />
+        <entry key="..\:/Users/judso/AndroidStudioProjects/Sportable/app/src/main/res/layout/filters_drawer_content.xml" value="0.20964912280701756" />
+        <entry key="..\:/Users/judso/AndroidStudioProjects/Sportable/app/src/main/res/layout/fragment_maps.xml" value="0.21052631578947367" />
+        <entry key="..\:/Users/judso/AndroidStudioProjects/Sportable/app/src/main/res/layout/item_event.xml" value="0.264" />
+        <entry key="..\:/Users/judso/AndroidStudioProjects/Sportable/app/src/main/res/layout/item_member.xml" value="0.20964912280701756" />
+        <entry key="..\:/Users/judso/AndroidStudioProjects/Sportable/app/src/main/res/layout/item_my_event.xml" value="0.40264650283553877" />
+        <entry key="..\:/Users/judso/AndroidStudioProjects/Sportable/app/src/main/res/layout/item_sport.xml" value="0.20964912280701756" />
         <entry key="..\:/Users/judso/AndroidStudioProjects/Sportable/app/src/main/res/layout/main_content.xml" value="0.1875" />
+        <entry key="..\:/Users/judso/AndroidStudioProjects/Sportable/app/src/main/res/layout/my_events_content.xml" value="0.21052631578947367" />
+        <entry key="..\:/Users/judso/AndroidStudioProjects/Sportable/app/src/main/res/layout/nav_header_filters.xml" value="0.20964912280701756" />
         <entry key="..\:/Users/judso/AndroidStudioProjects/Sportable/app/src/main/res/layout/nav_header_main.xml" value="0.264" />
+        <entry key="..\:/Users/judso/AndroidStudioProjects/Sportable/app/src/main/res/layout/sports_content.xml" value="0.20964912280701756" />
+        <entry key="..\:/Users/judso/AndroidStudioProjects/Sportable/app/src/main/res/layout/testowy.xml" value="0.20964912280701756" />
+        <entry key="..\:/Users/judso/AndroidStudioProjects/Sportable/app/src/main/res/menu/activity_main_drawer.xml" value="0.2077922077922078" />
+        <entry key="..\:/Users/judso/AndroidStudioProjects/Sportable/app/src/main/res/menu/menu_leave_event.xml" value="0.20964912280701756" />
       </map>
     </option>
   </component>

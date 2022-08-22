@@ -1,7 +1,9 @@
 package com.example.sportable.models
 
+import android.os.Build
 import android.os.Parcel
 import android.os.Parcelable
+import androidx.annotation.RequiresApi
 
 data class User(
 
@@ -11,7 +13,8 @@ data class User(
     val login: String = "",
     val image: String = "",
     val mobile: Long = 0,
-    val fcmToken: String = ""
+    val fcmToken: String = "",
+    val isAdmin: Boolean = false
 
 ): Parcelable {
     constructor(parcel: Parcel) : this(
@@ -21,7 +24,8 @@ data class User(
         parcel.readString()!!,
         parcel.readString()!!,
         parcel.readLong(),
-        parcel.readString()!!
+        parcel.readString()!!,
+
     ) {
     }
 

@@ -13,4 +13,14 @@
     <color name="primary_text_color">#363A43</color>
     <color name="secondary_text_color">#7A8089</color>
     <color name="snackbar_error_color">#F72400</color>
+    <color name="colorBlack">#000000</color>
+    <color name="colorBlue">#5552FF</color>
+    <color name="colorPrimaryLight">#5552FF</color>
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorBackground">#EBEBEB</color>
+    <color name="colorTrendingStart">#00b09b</color>
+    <color name="colorDivider">#D6D6D6</color>
+
+    <color name="divider_color">#EAEAEA</color>
+
 </resources>

@@ -7,11 +7,20 @@ import android.os.Handler
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.example.sportable.R
+import com.example.sportable.firebase.FirestoreClass
+import com.example.sportable.models.Address
+import com.example.sportable.models.Event
+import com.example.sportable.models.Sport
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.dialog_progress.*
 
 open class BaseActivity : AppCompatActivity() {
+    companion object {
+        lateinit var mSportsList: ArrayList<Sport>
+        lateinit var allEvents: ArrayList<Event>
+        lateinit var userAddress: Address
+    }
 
     private var doubleBackToExitPressedOnce = false
 
@@ -62,4 +71,11 @@ open class BaseActivity : AppCompatActivity() {
         snackBarView.setBackgroundColor(ContextCompat.getColor(this, R.color.snackbar_error_color))
         snackBar.show()
     }
+
+    fun showToast() {
+        Toast.makeText(this, "załadowano sporty", Toast.LENGTH_LONG).show()
+    }
+
+
+
 }
