@@ -33,6 +33,7 @@ open class MyEventItemsAdapter (private val context: Context,
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        val calendar = Calendar.getInstance()
         var imageURL = ""
         var eventSportName = ""
         val model = list[position]
@@ -57,6 +58,10 @@ open class MyEventItemsAdapter (private val context: Context,
             holder.itemView.tv_sport_name.text = eventSportName
             holder.itemView.tv_created_by.text = "Created by: ${model.createdBy}"
             holder.itemView.tv_max_people.text = model.maxPeople.toString()
+
+            if(model.date<(calendar.timeInMillis +120*60*1000) && model.currentNumberOfPeople<model.minPeople){
+                holder.itemView.tv_cancelled_event.visibility = View.VISIBLE
+            }
 
             val simpleDateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH)
             val selectedDate = simpleDateFormat.format(Date(model.date))

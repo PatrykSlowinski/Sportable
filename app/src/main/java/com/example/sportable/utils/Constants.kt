@@ -10,6 +10,7 @@ import com.example.sportable.activities.MyProfileActivity
 object Constants {
 
 
+    const val SPORTPROPOSITION = "sport_proposition"
     const val ADDRESS:String = "address"
     const val LASTFILTERS: String = "last_filters"
     const val USERS: String = "users"

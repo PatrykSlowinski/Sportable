@@ -1,17 +1,24 @@
 package com.example.sportable.firebase
 
 import android.app.Activity
+import android.content.ContentValues.TAG
+import android.os.Build
 import android.util.Log
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import com.example.sportable.activities.*
 import com.example.sportable.activities.BaseActivity.Companion.allEvents
+import com.example.sportable.activities.BaseActivity.Companion.isUserAdmin
 import com.example.sportable.activities.BaseActivity.Companion.mSportsList
 import com.example.sportable.activities.BaseActivity.Companion.userAddress
 import com.example.sportable.models.*
 import com.example.sportable.utils.Constants
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.SetOptions
+import com.google.firebase.firestore.*
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 class FirestoreClass {
 
@@ -89,7 +96,9 @@ class FirestoreClass {
             }
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     fun getAllEventsList(activity: BaseActivity) {
+        val calendar = Calendar.getInstance()
         mFireStore.collection(Constants.EVENTS)
             .get()
             .addOnSuccessListener { document ->
@@ -98,7 +107,13 @@ class FirestoreClass {
                 for (i in document.documents) {
                     val event = i.toObject(Event::class.java)!!
                     event.documentId = i.id
-                    eventsList.add(event)
+                    if((event.currentNumberOfPeople>=event.minPeople && event.date > calendar.timeInMillis) || ((event.currentNumberOfPeople<event.minPeople) &&(event.date > (calendar.timeInMillis + 120*60*1000)))) {
+                        eventsList.add(event)
+                    }
+                }
+
+                if(activity is MainActivity){
+                    allEvents = eventsList
                 }
 
                 if (activity is AllEventsActivity) {
@@ -324,6 +339,7 @@ class FirestoreClass {
 
         val assignedToHashMap = HashMap<String, Any>()
         assignedToHashMap[Constants.ASSIGNED_TO] = event.assignedTo
+        assignedToHashMap["currentNumberOfPeople"] = event.currentNumberOfPeople
 
 
 
@@ -425,6 +441,64 @@ class FirestoreClass {
                 )
             }
     }
+
+    fun addSportProposition(activity: AddSportActivity, sportProposition: SportProposition){
+        mFireStore.collection(Constants.SPORTPROPOSITION)
+            .document()
+            .set(sportProposition , SetOptions.merge())
+            .addOnSuccessListener {
+                Log.e(activity.javaClass.simpleName, "Sport proposition sent successfully.")
+
+                Toast.makeText(activity, "Proposition sent. Thank you.", Toast.LENGTH_SHORT).show()
+
+                if(activity is AddSportActivity) {
+                }
+            }
+            .addOnFailureListener { e ->
+                activity.hideProgressDialog()
+                Log.e(
+                    activity.javaClass.simpleName,
+                    "Error while adding a sport.",
+                    e
+                )
+            }
+    }
+
+    fun isUserAdmin(activity: MainActivity) {
+        mFireStore.collection(Constants.USERS)
+            .whereEqualTo("id", getCurrentUserID())
+            .get()
+            .addOnSuccessListener { document ->
+                Log.e(activity.javaClass.simpleName, "User status is set.")
+                val User: User = document.documents[0].toObject(User::class.java)!!
+                if(User.admin){
+                    isUserAdmin = true
+                }
+
+            }
+    }
+
+    fun deleteOutdatedEvents(activity:MainActivity){
+        val calendar = Calendar.getInstance()
+        var itemsRef: CollectionReference = mFireStore.collection(Constants.EVENTS)
+        var query : Query = itemsRef.whereLessThanOrEqualTo("date", calendar.timeInMillis )
+        query.get().addOnCompleteListener(OnCompleteListener<QuerySnapshot>(){ task ->
+            if(task.isSuccessful){
+                for(document: DocumentSnapshot in task.result){
+                    val event: Event = document.toObject(Event::class.java)!!
+                    if((event.date + event.duration*60*1000)<=calendar.timeInMillis){
+                        itemsRef.document(document.id).delete()
+                    }
+                }
+            }else{
+                Log.d(TAG, "Error getting documents: ", task.exception)
+            }
+
+
+        })
+    }
+
+
 
 
 }

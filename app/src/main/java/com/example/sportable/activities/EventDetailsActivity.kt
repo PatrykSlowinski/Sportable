@@ -77,7 +77,6 @@ class EventDetailsActivity : BaseActivity() {
         //val userList = User()
         //tv_event_details_sport_name.setText(event.sportId)
         tv_details_created_by.setText("${event.createdBy}")
-        tv_time.setText("17:00")
         val simpleDateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH)
         val selectedDate = simpleDateFormat.format(Date(event.date))
         tv_date.text = selectedDate
@@ -85,7 +84,7 @@ class EventDetailsActivity : BaseActivity() {
         var selectedTime = simpleTimeFormat.format(Date(event.date))
         tv_time.text = selectedTime
         tv_location.setText(event.location)
-        tv_members_number.setText(event.maxPeople.toString())
+        tv_members.setText("Members: " +event.currentNumberOfPeople.toString()+"/"+event.maxPeople +" (min: "+event.minPeople+")")
 
         mMembersList = event.assignedTo
         mEvent = event
@@ -187,6 +186,7 @@ class EventDetailsActivity : BaseActivity() {
     private fun joinEvent() {
         mMembersList.add(getCurrentUserID())
         mEvent.assignedTo = mMembersList
+        mEvent.currentNumberOfPeople += 1
         //showProgressDialog("Please Wait...")
         FirestoreClass().updateMemberList(this, mEvent)
     }
@@ -198,6 +198,7 @@ class EventDetailsActivity : BaseActivity() {
 
 
         mEvent.assignedTo = mMembersList
+        mEvent.currentNumberOfPeople -= 1
 
         //Toast.makeText(this, mEvent.assignedTo.size.toString(), Toast.LENGTH_SHORT).show()
 

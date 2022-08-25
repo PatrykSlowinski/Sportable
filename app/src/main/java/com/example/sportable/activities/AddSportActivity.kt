@@ -8,6 +8,7 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -15,6 +16,7 @@ import com.bumptech.glide.Glide
 import com.example.sportable.R
 import com.example.sportable.firebase.FirestoreClass
 import com.example.sportable.models.Sport
+import com.example.sportable.models.SportProposition
 import com.example.sportable.utils.Constants
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
@@ -52,11 +54,16 @@ class AddSportActivity : BaseActivity() {
         }
 
         btn_add_sport.setOnClickListener {
+            if(isUserAdmin){
             if(mSelectedImageFileUri != null){
                 uploadSportImage()
             }else{
                 showProgressDialog(resources.getString(R.string.please_wait))
                 addSport()
+            }}
+            else{
+                FirestoreClass().addSportProposition(this, SportProposition(et_add_sport_name.text.toString()))
+                finish()
             }
         }
     }
@@ -117,8 +124,16 @@ class AddSportActivity : BaseActivity() {
         if(actionBar != null){
             actionBar.setDisplayHomeAsUpEnabled(true)
             actionBar.setHomeAsUpIndicator(R.drawable.ic_white_color_back_24dp)
+            if(isUserAdmin){
             actionBar.title = resources.getString((R.string.add_sport))
+            }
+            else{
+                actionBar.title = "Propose A New Sport"
+                iv_add_sport_image.visibility = View.INVISIBLE
+                btn_add_sport.text = "Send Proposition"
+            }
         }
+
 
         toolbar_add_sport_activity.setNavigationOnClickListener { onBackPressed() }
     }
@@ -161,6 +176,7 @@ class AddSportActivity : BaseActivity() {
             }
         }
     }
+
 
 
 }

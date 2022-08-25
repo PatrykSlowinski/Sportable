@@ -253,6 +253,7 @@ class MyProfileActivity : BaseActivity() {
         for(event in allEventsMembered){
             if(mUserDetails.id in event.assignedTo){
                 event.assignedTo.remove(mUserDetails.id)
+                event.currentNumberOfPeople--
                 FirestoreClass().updateMemberList(this,event)
             }
         }

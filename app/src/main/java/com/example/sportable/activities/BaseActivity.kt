@@ -20,6 +20,7 @@ open class BaseActivity : AppCompatActivity() {
         lateinit var mSportsList: ArrayList<Sport>
         lateinit var allEvents: ArrayList<Event>
         lateinit var userAddress: Address
+        var isUserAdmin: Boolean = false
     }
 
     private var doubleBackToExitPressedOnce = false

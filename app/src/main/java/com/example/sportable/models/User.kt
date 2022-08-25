@@ -14,9 +14,10 @@ data class User(
     val image: String = "",
     val mobile: Long = 0,
     val fcmToken: String = "",
-    val isAdmin: Boolean = false
+    val admin: Boolean = false
 
 ): Parcelable {
+    @RequiresApi(Build.VERSION_CODES.Q)
     constructor(parcel: Parcel) : this(
         parcel.readString()!!,
         parcel.readString()!!,
@@ -25,12 +26,14 @@ data class User(
         parcel.readString()!!,
         parcel.readLong(),
         parcel.readString()!!,
+        parcel.readBoolean()!!
 
     ) {
     }
 
     override fun describeContents() = 0
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
         writeString(id)
         writeString(name)
@@ -39,10 +42,12 @@ data class User(
         writeString(image)
         writeLong(mobile)
         writeString(fcmToken)
+        writeBoolean(admin)
 
     }
 
     companion object CREATOR : Parcelable.Creator<User> {
+        @RequiresApi(Build.VERSION_CODES.Q)
         override fun createFromParcel(parcel: Parcel): User {
             return User(parcel)
         }

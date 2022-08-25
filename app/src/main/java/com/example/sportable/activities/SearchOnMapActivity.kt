@@ -138,8 +138,11 @@ class SearchOnMapActivity : BaseActivity(), OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
-        val position = com.google.android.gms.maps.model.LatLng(0.0, 0.0)
+        val position =
+            com.google.android.gms.maps.model.LatLng(userAddress.latitude, userAddress.longitude)
         FirestoreClass().getAllEventsList(this)
+        val newLatLngZoom = CameraUpdateFactory.newLatLngZoom(position, 13f)
+        googleMap.animateCamera(newLatLngZoom)
 
         googleMap.setOnInfoWindowClickListener(GoogleMap.OnInfoWindowClickListener()  { marker ->
             val event: Event = markers.getValue(marker)
@@ -185,48 +188,56 @@ class SearchOnMapActivity : BaseActivity(), OnMapReadyCallback {
 
         for (event in eventsList) {
             var imagePath: String = ""
+            if(event.currentNumberOfPeople<event.maxPeople) {
 
-            for (sport in mSportsList) {
-                if (sport.documentId == event.sportId) {
-                    imagePath = sport.image
-                }
-                var bitmapFinal: Bitmap?
+                for (sport in mSportsList) {
+                    if (sport.documentId == event.sportId) {
+                        imagePath = sport.image
+                    }
+                    var bitmapFinal: Bitmap?
 
-                Glide.with(this)
-                    .asBitmap()
-                    .load(imagePath)
-                    .into(object : CustomTarget<Bitmap>() {
-                        override fun onResourceReady(
-                            resource: Bitmap,
-                            transition: com.bumptech.glide.request.transition.Transition<in Bitmap>?
-                        ) {
+                    Glide.with(this)
+                        .asBitmap()
+                        .load(imagePath)
+                        .into(object : CustomTarget<Bitmap>() {
+                            override fun onResourceReady(
+                                resource: Bitmap,
+                                transition: com.bumptech.glide.request.transition.Transition<in Bitmap>?
+                            ) {
 
-                            bitmapFinal =
-                            Bitmap.createScaledBitmap(resource, 150, 150, false) //here we will insert the bitmap we got with the link in a placehold with white border.
+                                bitmapFinal =
+                                    Bitmap.createScaledBitmap(
+                                        resource,
+                                        150,
+                                        150,
+                                        false
+                                    ) //here we will insert the bitmap we got with the link in a placehold with white border.
 
-                            val marker = mMap.addMarker(
-                                MarkerOptions().position(
-                                    com.google.android.gms.maps.model.LatLng(
-                                        event.latitude,
-                                        event.longitude
+                                val marker = mMap.addMarker(
+                                    MarkerOptions().position(
+                                        com.google.android.gms.maps.model.LatLng(
+                                            event.latitude,
+                                            event.longitude
+                                        )
+                                    ).title("Check details").icon(
+                                        //BitmapDescriptorFactory.fromBitmap(R.drawable.iconlocation
+                                        BitmapDescriptorFactory.fromBitmap(bitmapFinal)
                                     )
-                                ).title("Check details").icon(
-                                    //BitmapDescriptorFactory.fromBitmap(R.drawable.iconlocation
-                                    BitmapDescriptorFactory.fromBitmap(bitmapFinal)))
+                                )
                                 markers.put(marker, event)
 
 
+                            }
 
-                        }
-
-                        override fun onLoadCleared(placeholder: Drawable?) {
-                            mMap.clear()
-                        }
-
-
-                    })
+                            override fun onLoadCleared(placeholder: Drawable?) {
+                                mMap.clear()
+                            }
 
 
+                        })
+
+
+                }
             }
         }
     }

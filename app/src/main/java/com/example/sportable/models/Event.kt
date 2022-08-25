@@ -11,10 +11,12 @@ data class Event (
     // godziny
     val minPeople: Int = 0,
     val maxPeople: Int = 0,
+    var currentNumberOfPeople: Int = 0,
     var documentId: String = "",
     val date: Long = 0,
     val latitude: Double = 0.0,
-    val longitude: Double = 0.0
+    val longitude: Double = 0.0,
+    val duration: Int = 0
 ): Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString()!!,
@@ -23,10 +25,12 @@ data class Event (
         parcel.readString()!!,
         parcel.readInt(),
         parcel.readInt(),
+        parcel.readInt(),
         parcel.readString()!!,
         parcel.readLong(),
         parcel.readDouble(),
-        parcel.readDouble()
+        parcel.readDouble(),
+        parcel.readInt()
 
     ) {
     }
@@ -38,10 +42,12 @@ data class Event (
         parcel.writeString(location)
         parcel.writeInt(minPeople)
         parcel.writeInt(maxPeople)
+        parcel.writeInt(currentNumberOfPeople)
         parcel.writeString(documentId)
         parcel.writeLong(date)
         parcel.writeDouble(latitude)
         parcel.writeDouble(longitude)
+        parcel.writeInt(duration)
     }
 
     override fun describeContents(): Int {

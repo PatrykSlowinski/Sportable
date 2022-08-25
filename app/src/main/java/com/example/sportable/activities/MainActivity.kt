@@ -5,6 +5,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import android.view.View
+import android.widget.Toast
 import androidx.core.view.GravityCompat
 import com.bumptech.glide.Glide
 import com.example.sportable.R
@@ -28,12 +30,11 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+        FirestoreClass().isUserAdmin(this)
         setupActionBar()
         FirestoreClass().getUserAddress(this)
-
+        FirestoreClass().deleteOutdatedEvents(this)
         nav_view.setNavigationItemSelectedListener(this)
-
         FirestoreClass().loadUserData(this)
         FirestoreClass().getSportsList(this)
 
@@ -77,6 +78,9 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             drawer_layout.closeDrawer(GravityCompat.START)
             }else{
                     drawer_layout.openDrawer(GravityCompat.START)
+            if(!isUserAdmin){
+                tv_admin.visibility = View.INVISIBLE
+            }
             }
         }
 

@@ -118,6 +118,7 @@ class MyEventsActivity : BaseActivity() {
             rv_my_events_joined.adapter = adapter
 
 
+
             adapter.setOnClickListener(object : MyEventItemsAdapter.OnClickListener {
                 override fun onClick(position: Int, model: Event) {
                     val intent = Intent(this@MyEventsActivity, EventDetailsActivity::class.java)

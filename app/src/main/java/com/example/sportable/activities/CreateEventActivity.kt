@@ -96,7 +96,6 @@ class CreateEventActivity : BaseActivity(), DatePickerDialog.OnDateSetListener, 
 
 
         btn_create.setOnClickListener {
-            showProgressDialog(resources.getString(R.string.please_wait))
             createEvent()
         }
 
@@ -122,6 +121,7 @@ class CreateEventActivity : BaseActivity(), DatePickerDialog.OnDateSetListener, 
             dpd.show()
         }
 
+
     }
 
     private fun getDateTimeCalendar(){
@@ -129,7 +129,7 @@ class CreateEventActivity : BaseActivity(), DatePickerDialog.OnDateSetListener, 
         day = cal.get(Calendar.DAY_OF_MONTH)
         month = cal.get(Calendar.MONTH)
         year =  cal.get(Calendar.YEAR)
-        hour = cal.get(Calendar.HOUR)
+        hour = cal.get(Calendar.HOUR_OF_DAY)
         minute = cal.get(Calendar.MINUTE)
 
     }
@@ -151,23 +151,48 @@ class CreateEventActivity : BaseActivity(), DatePickerDialog.OnDateSetListener, 
     }
 
     private fun createEvent(){
-        val assignedUsersArrayList: ArrayList<String> = ArrayList()
-        assignedUsersArrayList.add((getCurrentUserID()))
+        var minimum : Int = 0
+        var maximum : Int = 0
+        var duration: Int = 0
 
-        var event = Event(
-            mSelectedSportId.toString(),
-            mUserLogin,
-            assignedUsersArrayList,
-            et_location.text.toString(),
-            Integer.parseInt(et_minimum.text.toString()),
-            Integer.parseInt(et_maximum.text.toString()),
-            "",
-            mSelectedDateMilliSeconds,
-            mLatitude,
-            mLongitude
-        )
+        var numericsAreOk = true
+        try{
+            minimum = Integer.parseInt(et_minimum.text.toString())
+            maximum = Integer.parseInt(et_maximum.text.toString())
+            duration = Integer.parseInt(et_duration.text.toString())}
+        catch(e: NumberFormatException){
+            numericsAreOk = false
+            Toast.makeText(this, "Minimum, maximum number of people and duration of event have to be numeric!", Toast.LENGTH_SHORT).show()
+        }
 
-        FirestoreClass().createEvent(this, event)
+        if(numericsAreOk == true){
+            if(minimum<=1) Toast.makeText(this, "Minimum number of people has to be greater than 1", Toast.LENGTH_SHORT).show()
+            else if(maximum<=1) Toast.makeText(this, "Maximum number of people has to be greater than 1", Toast.LENGTH_SHORT).show()
+            else if(duration<15 || duration>300) Toast.makeText(this, "Duration of the event has to be greater than 15 minutes and less than 300 minutes ", Toast.LENGTH_SHORT).show()
+            else if(maximum < minimum) Toast.makeText(this, "Maximum number of people has to be greater or equal to minimum", Toast.LENGTH_SHORT).show()
+            else{
+                showProgressDialog(resources.getString(R.string.please_wait))
+                val assignedUsersArrayList: ArrayList<String> = ArrayList()
+                assignedUsersArrayList.add((getCurrentUserID()))
+
+                var event = Event(
+                    mSelectedSportId.toString(),
+                    mUserLogin,
+                    assignedUsersArrayList,
+                    et_location.text.toString(),
+                    minimum,
+                    maximum,
+                    1,
+                    "",
+                    mSelectedDateMilliSeconds,
+                    mLatitude,
+                    mLongitude,
+                    duration
+                )
+
+                FirestoreClass().createEvent(this, event)
+            }
+        }
     }
 
 
@@ -290,8 +315,6 @@ class CreateEventActivity : BaseActivity(), DatePickerDialog.OnDateSetListener, 
 
                 val selectedDate = "$sDayOfMonth/$sMonthOfYear/$year"
 
-                tv_select_date.text = selectedDate
-
                 val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH)
 
                 val theDate = sdf.parse(selectedDate)
@@ -335,6 +358,9 @@ class CreateEventActivity : BaseActivity(), DatePickerDialog.OnDateSetListener, 
                     override fun onPermissionsChecked(report: MultiplePermissionsReport?) {
                         if (report!!.areAllPermissionsGranted()) {
 
+                            requestNewLocationData()
+                        }
+                        else{
                             requestNewLocationData()
                         }
                     }
@@ -460,4 +486,6 @@ class CreateEventActivity : BaseActivity(), DatePickerDialog.OnDateSetListener, 
             Toast.makeText(this, currentHours.toString(), Toast.LENGTH_LONG).show()
         }
     }
+
+
 }
