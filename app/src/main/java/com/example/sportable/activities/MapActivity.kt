@@ -8,11 +8,13 @@ import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationManager
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Looper
 import android.provider.Settings
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.location.LocationManagerCompat.isLocationEnabled
 import com.example.sportable.R
@@ -30,7 +32,7 @@ import com.google.type.LatLng
 import kotlinx.android.synthetic.main.activity_event_details.*
 import kotlinx.android.synthetic.main.activity_map.*
 
-class MapActivity : AppCompatActivity(), OnMapReadyCallback {
+class MapActivity : BaseActivity(), OnMapReadyCallback {
 
 
     private val pERMISSION_ID = 42

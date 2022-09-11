@@ -12,32 +12,22 @@ import android.location.Location
 import android.location.LocationManager
 import android.net.Uri
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Looper
 import android.provider.Settings
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
-import android.view.Gravity
 import android.view.View
-import android.widget.Spinner
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.sportable.R
 import com.example.sportable.adapters.EventItemsAdapter
-import com.example.sportable.adapters.SportItemsAdapter
-import com.example.sportable.adapters.SportItemsFiltersAdapter
 import com.example.sportable.firebase.FirestoreClass
 import com.example.sportable.models.Event
-import com.example.sportable.models.LastFilters
-import com.example.sportable.models.Sport
 import com.example.sportable.utils.Constants
 import com.example.sportable.utils.GetAddressFromLatLng
 import com.google.android.gms.location.*
-import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.widget.Autocomplete
@@ -48,20 +38,10 @@ import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import kotlinx.android.synthetic.main.activity_all_events.*
-import kotlinx.android.synthetic.main.activity_create_event.*
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_sign_up.*
 import kotlinx.android.synthetic.main.all_events_content.*
 import kotlinx.android.synthetic.main.app_bar_all_events.*
-import kotlinx.android.synthetic.main.app_bar_main.*
-import kotlinx.android.synthetic.main.app_bar_my_events.*
 import kotlinx.android.synthetic.main.filters_drawer_content.*
-import kotlinx.android.synthetic.main.my_events_content.*
-import kotlinx.android.synthetic.main.my_events_content.cv_my_events_created
-import kotlinx.android.synthetic.main.my_events_content.rv_my_events_created_by_me
-import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.text.StringBuilder
 
 class AllEventsActivity : BaseActivity() {
     private lateinit var mFusedLocationClient: FusedLocationProviderClient
@@ -98,6 +78,7 @@ class AllEventsActivity : BaseActivity() {
 
         updateEventsList()
 
+
         if (!Places.isInitialized()) {
             Places.initialize(
                 this,
@@ -117,13 +98,7 @@ class AllEventsActivity : BaseActivity() {
             dropDownListSportsFilters()
         }
 
-        /*spinner_sports = findViewById(R.id.spinner_sports)
-        val adapter = SportItemsFiltersAdapter(this, mSportsList)
-        spinner_sports.adapter = adapter*/
         et_filters_location.setOnClickListener { locationHandler()
-            //val intent = Intent(this, MapCreatingEventActivity::class.java)
-            //startActivity(intent)
-            //Log.e("sadasdsada","asdasdsad")
 
         }
 
@@ -141,7 +116,6 @@ class AllEventsActivity : BaseActivity() {
                 Toast.LENGTH_SHORT
             ).show()
 
-            // This will redirect you to settings from where you need to turn on the location provider.
             val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
             startActivity(intent)
         } else {
@@ -207,7 +181,6 @@ class AllEventsActivity : BaseActivity() {
         mLocationRequest.numUpdates = 1
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-        Toast.makeText(this@AllEventsActivity, "klik", Toast.LENGTH_SHORT).show()
         mFusedLocationClient.requestLocationUpdates(
             mLocationRequest, mLocationCallback,
             Looper.myLooper()
@@ -218,7 +191,6 @@ class AllEventsActivity : BaseActivity() {
         override fun onLocationResult(locationResult: LocationResult) {
             val mLastLocation: Location = locationResult.lastLocation
             mLatitude = mLastLocation.latitude
-            //Toast.makeText(this@AllEventsActivity, mLatitude.toString(), Toast.LENGTH_SHORT).show()
             Log.e("Current Latitude", "$mLatitude")
             mLongitude = mLastLocation.longitude
             Log.e("Current Longitude", "$mLongitude")
@@ -288,12 +260,10 @@ class AllEventsActivity : BaseActivity() {
     @RequiresApi(Build.VERSION_CODES.N)
     fun populateEventsListToUI(eventsList: ArrayList<Event>){
         hideProgressDialog()
-
         eventsList.removeIf{e: Event -> e.currentNumberOfPeople>=e.maxPeople}
         eventsList.removeIf{e: Event ->
             val float = floatArrayOf(.1f)
             val distanceBetween = Location.distanceBetween(e.latitude,e.longitude, mLatitude, mLongitude,float)
-            Toast.makeText(this, float[0].toString(), Toast.LENGTH_SHORT).show()
             var str = km.text.toString()
             float[0] > str.toFloat()*1000
         }
@@ -400,7 +370,8 @@ class AllEventsActivity : BaseActivity() {
             }
         }
         populateEventsListToUI(eventsAfterFiltration)
-        showToast()
+        //FirestoreClass().getAllEventsList(this)
+        //showToast()
     }
 
     fun lastFiltersAddedSuccessfully() {
@@ -410,18 +381,6 @@ class AllEventsActivity : BaseActivity() {
 
         finish()
     }
-
-    private fun saveFilters(){
-        var filtersToSave = ArrayList<String>()
-        for(s in selectedSport)
-        {
-            if(s) filtersToSave.add(mSportsList[selectedSport.indexOf(s)].name)
-        }
-        val lastFilters= LastFilters(FirestoreClass().getCurrentUserID(), filtersToSave)
-
-        FirestoreClass().saveFilters(this, lastFilters)
-    }
-
 
     private fun locationHandler(){
         try {

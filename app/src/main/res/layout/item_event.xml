@@ -38,27 +38,28 @@
                 tools:text = "Sport" />
 
             <TextView
-                android:id="@+id/tv_created_by"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/secondary_text_color"
-                android:textSize="@dimen/item_board_created_by_text_size"
-                tools:text = "Created By" />
-
-            <TextView
-                android:id="@+id/tv_max_people"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/secondary_text_color"
-                android:textSize="@dimen/item_board_created_by_text_size"
-                tools:text = "Max number of people" />
-            <TextView
                 android:id="@+id/tv_event_date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/secondary_text_color"
                 android:textSize="@dimen/item_board_created_by_text_size"
                 tools:text = "Date" />
+
+            <TextView
+                android:id="@+id/tv_event_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/secondary_text_color"
+                android:textSize="@dimen/item_board_created_by_text_size"
+                tools:text = "Time" />
+
+            <TextView
+                android:id="@+id/tv_event_duration"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/secondary_text_color"
+                android:textSize="@dimen/item_board_created_by_text_size"
+                tools:text = "Event duration" />
 
 
         </LinearLayout>

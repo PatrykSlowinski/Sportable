@@ -11,12 +11,14 @@ import android.location.Address
 import android.location.Geocoder
 import android.location.Location
 import android.location.LocationManager
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Looper
 import android.provider.Settings
 import android.util.Log
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import com.example.sportable.R
 import com.example.sportable.firebase.FirestoreClass
@@ -53,6 +55,7 @@ class MapCreatingEventActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.O
 
     lateinit var mMap: GoogleMap
     lateinit var geocoder: Geocoder
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_map_creating_event)
@@ -102,6 +105,11 @@ class MapCreatingEventActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.O
         }
         btn_my_cur_loc.setOnClickListener{
             getCurrentLocationMarker()
+        }
+
+        btn_map_info.setOnClickListener{
+            showErrorSnackBar("\n" +
+                    "Select a location by holding and dragging the stadium icon or holding your finger on the desired location on the map. You can search for a location by entering its name or address in the search panel at the top of the screen. You can also check your current location by clicking on the red round button on the right side of the screen.")
         }
 
 
@@ -207,11 +215,8 @@ class MapCreatingEventActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.O
 
     private fun setMarker(place: Place) {
         mMap.clear()
-        marker = mMap.addMarker(MarkerOptions().position(place.latLng).title(place.address).draggable(true).icon(BitmapDescriptorFactory.fromResource(R.drawable.iconsstadium)))
+        marker = mMap.addMarker(MarkerOptions().position(place.latLng).title(place.name).draggable(true).icon(BitmapDescriptorFactory.fromResource(R.drawable.iconsstadium)))
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(place.latLng, 17F))
-        /*address = place.address
-        lat = place.latLng.latitude
-        lng = place.latLng.longitude*/
     }
 
     private fun setupActionBar(){
@@ -273,7 +278,6 @@ class MapCreatingEventActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.O
             if(addresses.size>0){
                 val address: Address = addresses[0]
                 val streetAddress = address.getAddressLine(0)
-                //marker = mMap.addMarker(MarkerOptions().position(latLng).title(streetAddress).draggable(true))
                 marker.position = latLng
                 marker.title = streetAddress
                 marker.isDraggable = true

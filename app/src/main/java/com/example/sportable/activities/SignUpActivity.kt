@@ -2,11 +2,13 @@ package com.example.sportable.activities
 
 import android.app.Activity
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
 import android.view.WindowManager
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import com.example.sportable.R
 import com.example.sportable.firebase.FirestoreClass
 import com.example.sportable.models.Address
@@ -24,8 +26,8 @@ import kotlinx.android.synthetic.main.activity_sign_up.*
 
 class SignUpActivity : BaseActivity() {
     var userId : String = ""
-    private var mLatitude: Double = 0.0 // A variable which will hold the latitude value.
-    private var mLongitude: Double = 0.0 // A variable which will hold the longitude value
+    private var mLatitude: Double = 0.0
+    private var mLongitude: Double = 0.0
     private lateinit var mFusedLocationClient: FusedLocationProviderClient
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,6 +49,10 @@ class SignUpActivity : BaseActivity() {
 
         et_select_address.setOnClickListener {
             setAddress()
+        }
+
+        btn_sign_up.setOnClickListener {
+            FirestoreClass().checkIfLoginIsAlreadyInUse(this, et_login.text.toString().trim{ it<= ' '})
         }
     }
 
@@ -77,7 +83,7 @@ class SignUpActivity : BaseActivity() {
 
     fun userRegisteredSuccess(){
         Toast.makeText(
-            this, "you have" +
+            this, "You have" +
                     " succesfully registered", Toast.LENGTH_LONG
         ).show()
         hideProgressDialog()
@@ -96,47 +102,42 @@ class SignUpActivity : BaseActivity() {
 
         toolbar_sign_up_activity.setNavigationOnClickListener { onBackPressed() }
 
-        btn_sign_up.setOnClickListener {
-            registerUser()
-        }
     }
 
-    private fun registerUser(){
+    fun registerUser(){
         val name: String = et_name.text.toString().trim{ it<= ' '}
         val email: String = et_email.text.toString().trim{ it<= ' '}
         val login: String = et_login.text.toString().trim{ it<= ' '}
         val password: String = et_password.text.toString().trim{ it<= ' '}
+        val address: String = et_select_address.text.toString().trim{ it<= ' '}
+        if(validateForm(name, email, login, password, address)){
 
-        if(validateForm(name, email, login, password)){
-            showProgressDialog(resources.getString(R.string.please_wait))
             FirebaseAuth.getInstance()
                 .createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
                     if (task.isSuccessful) {
+                        showProgressDialog(resources.getString(R.string.please_wait))
                         val firebaseUser: FirebaseUser = task.result!!.user!!
                         val registeredEmail = firebaseUser.email!!
                         val user = User(firebaseUser.uid, name, registeredEmail,login)
                         userId = firebaseUser.uid
                         FirestoreClass().registerUser(this, user)
                     } else {
-                        tv_enterData.text = task.exception.toString()
-                        Toast.makeText(
-                            this,
-                            "Registration failed", Toast.LENGTH_LONG
-                        ).show()
+                        showErrorSnackBar(task.exception?.message.toString())
                     }
                 }
         }
 
     }
 
-    private fun validateForm(name: String, email: String, login: String,  password: String): Boolean {
+    private fun validateForm(name: String, email: String, login: String, password: String, address:String): Boolean {
         return when{
-            TextUtils.isEmpty(email)->{
-                showErrorSnackBar("Please enter an email adress")
-                false
-            }
+
             TextUtils.isEmpty(name)->{
                 showErrorSnackBar("Please enter a name")
+                false
+            }
+            TextUtils.isEmpty(email)->{
+                showErrorSnackBar("Please enter an email adress")
                 false
             }
             TextUtils.isEmpty(login)->{
@@ -146,31 +147,40 @@ class SignUpActivity : BaseActivity() {
             TextUtils.isEmpty(password)->{
                 showErrorSnackBar("Please enter a password")
                 false
-            }else -> {
+            }
+            TextUtils.isEmpty(password)->{
+                showErrorSnackBar("Please enter a password")
+                false
+            }
+            TextUtils.isEmpty(address)->{
+                showErrorSnackBar("Please enter an address")
+                false
+            }
+            else -> {
                 true
             }
-
-
         }
-
-
     }
+
+
 
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == Constants.PLACE_AUTOCOMPLETE_REQUEST_CODE) {
 
-                val place: Place = Autocomplete.getPlaceFromIntent(data!!)
-
-                et_select_address.setText(place.address)
-                mLatitude = place.latLng!!.latitude
-                mLongitude = place.latLng!!.longitude
+                try {
+                    val place: Place = Autocomplete.getPlaceFromIntent(data!!)
+                    et_select_address.setText(place.address)
+                    mLatitude = place.latLng!!.latitude
+                    mLongitude = place.latLng!!.longitude
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
             }
         }
         else if (resultCode == Activity.RESULT_CANCELED) {
             Log.e("Cancelled", "Cancelled")
         }
     }
-
 }

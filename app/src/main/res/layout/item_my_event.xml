@@ -53,25 +53,6 @@
                     android:textSize="@dimen/item_board_name_text_size"
                     android:gravity="center"
                     tools:text="Sport" />
-
-                <TextView
-                    android:id="@+id/tv_created_by"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/secondary_text_color"
-                    android:textSize="@dimen/item_board_created_by_text_size"
-                    tools:text = "Created By"
-                    android:gravity="center"
-                    android:layout_marginTop="3dp"/>
-
-                <TextView
-                    android:id="@+id/tv_max_people"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/secondary_text_color"
-                    android:textSize="@dimen/item_board_created_by_text_size"
-                    android:gravity="center"
-                    tools:text = "Max number of people" />
                 <TextView
                     android:id="@+id/tv_my_event_date"
                     android:layout_width="match_parent"
@@ -80,6 +61,23 @@
                     android:textSize="@dimen/item_board_created_by_text_size"
                     android:gravity="center"
                     tools:text = "Date" />
+                <TextView
+                    android:id="@+id/tv_Time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/secondary_text_color"
+                    android:textSize="@dimen/item_board_created_by_text_size"
+                    android:gravity="center"
+                    tools:text = "Time" />
+                <TextView
+                    android:id="@+id/tv_myEvent_duration"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/secondary_text_color"
+                    android:textSize="@dimen/item_board_created_by_text_size"
+                    tools:text = "Duration"
+                    android:gravity="center"
+                    android:layout_marginTop="3dp"/>
 
 
             </LinearLayout>

@@ -2,11 +2,13 @@ package com.example.sportable.activities
 
 import android.app.Activity
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -83,6 +85,7 @@ class EventDetailsActivity : BaseActivity() {
         val simpleTimeFormat = SimpleDateFormat("HH:mm", Locale.ENGLISH)
         var selectedTime = simpleTimeFormat.format(Date(event.date))
         tv_time.text = selectedTime
+        tv_duration.text = event.duration.toString() + " minutes"
         tv_location.setText(event.location)
         tv_members.setText("Members: " +event.currentNumberOfPeople.toString()+"/"+event.maxPeople +" (min: "+event.minPeople+")")
 

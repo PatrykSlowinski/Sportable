@@ -110,6 +110,15 @@
                     android:textColor="@color/secondary_text_color"
                     android:textSize="@dimen/item_board_created_by_text_size"
                     android:text = "Location:"/>
+                <TextView
+                    android:layout_marginTop="5sp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:textColor="@color/secondary_text_color"
+                    android:textSize="@dimen/item_board_created_by_text_size"
+                    android:text = "Duration:"/>
+
 
             </LinearLayout>
 
@@ -154,6 +163,14 @@
                     android:textSize="@dimen/item_board_created_by_text_size"
                     tools:text = "Location:" />
 
+                <TextView
+                    android:layout_marginTop="5sp"
+                    android:id="@+id/tv_duration"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/secondary_text_color"
+                    android:textSize="@dimen/item_board_created_by_text_size"
+                    tools:text = "Duration:" />
             </LinearLayout>
         </LinearLayout>
 

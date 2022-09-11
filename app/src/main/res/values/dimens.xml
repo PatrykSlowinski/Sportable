@@ -56,7 +56,7 @@
     <dimen name="create_board_content_padding">16dp</dimen>
     <dimen name="board_image_size">100dp</dimen>
     <dimen name="create_board_til_marginTop">25dp</dimen>
-    <dimen name="create_board_btn_marginTop">30dp</dimen>
+    <dimen name="create_board_btn_marginTop">20dp</dimen>
 
     <dimen name="main_content_padding">16dp</dimen>
     <dimen name="edit_text_text_size">16sp</dimen>

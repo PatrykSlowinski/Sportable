@@ -3,12 +3,14 @@ package com.example.sportable.activities
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.TextUtils
 import android.util.Log
 import android.view.WindowManager
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import com.example.sportable.R
 import com.example.sportable.firebase.FirestoreClass
 import com.example.sportable.models.User
@@ -94,7 +96,6 @@ class SignInActivity : BaseActivity() {
                     if (task.isSuccessful) {
                         FirestoreClass().loadUserData(this)
                     } else {
-                        // If sign in fails, display a message to the user.
                         Log.w("Sign_in", "signInWithEmail:failure", task.exception)
                         Toast.makeText(baseContext, "Authentication failed.",
                             Toast.LENGTH_SHORT).show()

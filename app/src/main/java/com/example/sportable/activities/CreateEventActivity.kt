@@ -12,6 +12,7 @@ import android.content.Intent
 import android.location.Location
 import android.location.LocationManager
 import android.net.Uri
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Looper
@@ -21,6 +22,7 @@ import android.view.View
 import android.widget.DatePicker
 import android.widget.TimePicker
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import com.bumptech.glide.Glide
 import com.example.sportable.R
@@ -46,6 +48,7 @@ import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import io.grpc.InternalChannelz.id
 import kotlinx.android.synthetic.main.activity_create_event.*
+import kotlinx.android.synthetic.main.activity_sign_up.*
 import java.io.IOException
 import java.nio.channels.CancelledKeyException
 import java.text.SimpleDateFormat
@@ -103,11 +106,8 @@ class CreateEventActivity : BaseActivity(), DatePickerDialog.OnDateSetListener, 
             FirestoreClass().getSportsList(this)
         }
 
-        et_location.setOnClickListener { locationHandler()
-            //val intent = Intent(this, MapCreatingEventActivity::class.java)
-            //startActivity(intent)
-            //Log.e("sadasdsada","asdasdsad")
-
+        et_location.setOnClickListener {
+            locationHandler()
         }
 
         tv_select_current_location.setOnClickListener {
@@ -121,6 +121,25 @@ class CreateEventActivity : BaseActivity(), DatePickerDialog.OnDateSetListener, 
             dpd.show()
         }
 
+        btn_min_info.setOnClickListener{
+            showErrorSnackBar("Minimum number of people determines number of people that is needed to start the event. If there are fewer members 2 hours before the start of the event, the event is canceled.")
+        }
+
+        btn_max_info.setOnClickListener{
+            showErrorSnackBar("If the number of members of the event reaches the maximum number of people, no one else will be able to join.")
+        }
+
+        btn_time_info.setOnClickListener{
+            showErrorSnackBar("Set the date and time for the event. Remember that the event should start at least 2 hours from the current time, otherwise it will be canceled due to the lack of the minimum number of people.")
+        }
+
+        btn_duration_info.setOnClickListener{
+            showErrorSnackBar("Set the duration of event in minutes.")
+        }
+
+        btn_location_info.setOnClickListener{
+            showErrorSnackBar("Set the event location manually or set your current location as the event location by clicking the SELECT CURRENT LOCATION button.")
+        }
 
     }
 
@@ -162,14 +181,18 @@ class CreateEventActivity : BaseActivity(), DatePickerDialog.OnDateSetListener, 
             duration = Integer.parseInt(et_duration.text.toString())}
         catch(e: NumberFormatException){
             numericsAreOk = false
-            Toast.makeText(this, "Minimum, maximum number of people and duration of event have to be numeric!", Toast.LENGTH_SHORT).show()
+            showErrorSnackBar("Minimum, maximum number of people and duration of event have to be numeric! Minimum and maximum numbers of people have to be less or equal 50.")
         }
 
-        if(numericsAreOk == true){
-            if(minimum<=1) Toast.makeText(this, "Minimum number of people has to be greater than 1", Toast.LENGTH_SHORT).show()
-            else if(maximum<=1) Toast.makeText(this, "Maximum number of people has to be greater than 1", Toast.LENGTH_SHORT).show()
-            else if(duration<15 || duration>300) Toast.makeText(this, "Duration of the event has to be greater than 15 minutes and less than 300 minutes ", Toast.LENGTH_SHORT).show()
-            else if(maximum < minimum) Toast.makeText(this, "Maximum number of people has to be greater or equal to minimum", Toast.LENGTH_SHORT).show()
+        if(numericsAreOk){
+            if(minimum<=1) showErrorSnackBar("Minimum number of people has to be greater than 1.")
+            else if(maximum<=1) showErrorSnackBar("Maximum number of people has to be greater than 1.")
+            else if(maximum>50 || minimum >50) showErrorSnackBar("Minimum and maximum number of people have to be less or equal 50.")
+            else if(duration<15 || duration>300) showErrorSnackBar("Duration of the event has to be greater than 15 minutes and less than 300 minutes.")
+            else if(maximum < minimum) showErrorSnackBar("Maximum number of people has to be greater or equal to minimum.")
+            else if(tv_select_sport_create_event.text == "") showErrorSnackBar("You have to choose any sport.")
+            else if(tv_select_time.text.toString() == "") showErrorSnackBar("You have to choose event time.")
+            else if(et_location.text.toString() == "") showErrorSnackBar("You have to choose event location.")
             else{
                 showProgressDialog(resources.getString(R.string.please_wait))
                 val assignedUsersArrayList: ArrayList<String> = ArrayList()
@@ -206,7 +229,6 @@ class CreateEventActivity : BaseActivity(), DatePickerDialog.OnDateSetListener, 
     fun sportsListDialog(sportsList: ArrayList<Sport>){
         val mSportList = sportsList
 
-
         val listDialog = object : SportsListDialog(
             this,
             mSportList,
@@ -214,37 +236,22 @@ class CreateEventActivity : BaseActivity(), DatePickerDialog.OnDateSetListener, 
         ){
             override fun onItemSelected(sport: Sport) {
                 setSport(sport)
-               // Toast.makeText(this@CreateEventActivity, sport.name, Toast.LENGTH_LONG).show()
-                //tv_select_sport_create_event.text = "asddsa"//sport.name.toString()
-                /*try {
-                    // Load the user image in the ImageView.
-                    Glide
-                        .with(this@CreateEventActivity)
-                        .load(sport.image) // URI of the image
-                        .centerCrop() // Scale type of the image.
-                        .placeholder(R.drawable.ic_user_place_holder) // A default place holder
-                        .into(iv_sport_image) // the view in which the image will be loaded.
-                } catch (e: IOException) {
-                    e.printStackTrace()
-                }*/
             }
 
         }
         listDialog.show()
-
     }
 
     private fun setSport(sport: Sport) {
         mSelectedSportId = sport.documentId
         tv_select_sport_create_event.text = sport.name
         try {
-                    // Load the user image in the ImageView.
                     Glide
                         .with(this@CreateEventActivity)
-                        .load(sport.image) // URI of the image
-                        .centerCrop() // Scale type of the image.
-                        .placeholder(R.drawable.sports) // A default place holder
-                        .into(iv_sport_image) // the view in which the image will be loaded.
+                        .load(sport.image)
+                        .centerCrop()
+                        .placeholder(R.drawable.sports)
+                        .into(iv_sport_image)
                 } catch (e: IOException) {
                     e.printStackTrace()
                 }
@@ -256,25 +263,8 @@ class CreateEventActivity : BaseActivity(), DatePickerDialog.OnDateSetListener, 
                 Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG,
                 Place.Field.ADDRESS
             )
-            /*val autocompleteFragment =
-                supportFragmentManager.findFragmentById(R.id.autocomplete_fragment) as AutocompleteSupportFragment?
-            autocompleteFragment?.setPlaceFields(fields)*/
-
             val intent = Intent(this, MapCreatingEventActivity::class.java)
             startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE)
-
-
-
-
-
-            //val intent = Intent(this, MapActivity::class.java)
-            //intent.putExtra(Constants.LOCATION)
-            //startActivity(intent)
-            // Start the autocomplete intent with a unique request code.
-            //val intent =
-                //Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields)
-                  //  .build(this)
-            //startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE)
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -282,11 +272,7 @@ class CreateEventActivity : BaseActivity(), DatePickerDialog.OnDateSetListener, 
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        Log.e("sadasdsad","asdasdsad")
         if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
-            Log.e("dziala","asdasdsad")
-                //val place: Place = Autocomplete.getPlaceFromIntent(data!!)
-                //val place: Place? = data?.getParcelableExtra<Place>("place")
                 if (data != null) {
                     et_location.setText(data.getStringExtra("placeAddress"))
                     mLatitude = data.getDoubleExtra("placeLat", 0.0)
@@ -301,9 +287,9 @@ class CreateEventActivity : BaseActivity(), DatePickerDialog.OnDateSetListener, 
     private fun showDataPicker() {
         val c = Calendar.getInstance()
         val year =
-            c.get(Calendar.YEAR) // Returns the value of the given calendar field. This indicates YEAR
-        val month = c.get(Calendar.MONTH) // This indicates the Month
-        val day = c.get(Calendar.DAY_OF_MONTH) // This indicates the Day
+            c.get(Calendar.YEAR)
+        val month = c.get(Calendar.MONTH)
+        val day = c.get(Calendar.DAY_OF_MONTH)
 
         val dpd = DatePickerDialog(
             this,
@@ -326,7 +312,7 @@ class CreateEventActivity : BaseActivity(), DatePickerDialog.OnDateSetListener, 
             month,
             day
         )
-        dpd.show() // It is used to show the datePicker Dialog.
+        dpd.show()
     }
 
     private fun isLocationEnabled(): Boolean {
@@ -345,7 +331,6 @@ class CreateEventActivity : BaseActivity(), DatePickerDialog.OnDateSetListener, 
                 Toast.LENGTH_SHORT
             ).show()
 
-            // This will redirect you to settings from where you need to turn on the location provider.
             val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
             startActivity(intent)
         } else {
@@ -437,7 +422,6 @@ class CreateEventActivity : BaseActivity(), DatePickerDialog.OnDateSetListener, 
             })
 
             addressTask.getAddress()
-            // END
         }
     }
 
@@ -466,7 +450,6 @@ class CreateEventActivity : BaseActivity(), DatePickerDialog.OnDateSetListener, 
             val tpd = TimePickerDialog(this, this, hour, minute, true)
             tpd.show()
         }else {
-            Toast.makeText(this, "Current date:"+savedYear.toString(),Toast.LENGTH_SHORT).show()
             savedHour = hourOfDay
             savedMinute = minute
 
@@ -476,14 +459,9 @@ class CreateEventActivity : BaseActivity(), DatePickerDialog.OnDateSetListener, 
             val theSavedDate = sdf2.parse(selectedData)
             mSelectedDateMilliSeconds = theSavedDate!!.time
 
-            //val simpleDateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH)
-            //val selectedDate = simpleDateFormat.format(Date(mSelectedDateMilliSeconds))
             val date = Date(mSelectedDateMilliSeconds)
             val cal = Calendar.getInstance()
             cal.timeInMillis = mSelectedDateMilliSeconds
-
-
-            Toast.makeText(this, currentHours.toString(), Toast.LENGTH_LONG).show()
         }
     }
 

@@ -10,10 +10,12 @@ import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.location.Location
 import android.location.LocationManager
+import android.os.Build
 import android.os.Bundle
 import android.os.Looper
 import android.provider.Settings
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
@@ -41,6 +43,7 @@ class SearchOnMapActivity : BaseActivity(), OnMapReadyCallback {
     var currentLocation: com.google.android.gms.maps.model.LatLng =
         com.google.android.gms.maps.model.LatLng(0.0, 0.0)
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search_on_map)
@@ -136,6 +139,7 @@ class SearchOnMapActivity : BaseActivity(), OnMapReadyCallback {
         return false
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
         val position =
@@ -145,9 +149,11 @@ class SearchOnMapActivity : BaseActivity(), OnMapReadyCallback {
         googleMap.animateCamera(newLatLngZoom)
 
         googleMap.setOnInfoWindowClickListener(GoogleMap.OnInfoWindowClickListener()  { marker ->
-            val event: Event = markers.getValue(marker)
-            markerOnClick(event)
-            false
+            if(marker.title != "Your current location"){
+                val event: Event = markers.getValue(marker)
+                markerOnClick(event)
+                false
+            }
         })
     }
 

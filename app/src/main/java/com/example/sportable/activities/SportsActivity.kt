@@ -2,11 +2,13 @@ package com.example.sportable.activities
 
 import android.app.Activity
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
+import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.sportable.R
 import com.example.sportable.adapters.SportItemsAdapter
@@ -25,6 +27,7 @@ class SportsActivity : BaseActivity() {
     companion object{
         const val ADD_SPORT_REQUEST_CODE = 12
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sports)

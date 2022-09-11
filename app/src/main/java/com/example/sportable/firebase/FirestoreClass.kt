@@ -16,6 +16,7 @@ import com.example.sportable.utils.Constants
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.*
+import kotlinx.android.synthetic.main.activity_sign_up.*
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
@@ -113,15 +114,19 @@ class FirestoreClass {
                 }
 
                 if(activity is MainActivity){
-                    allEvents = eventsList
+                    allEvents.clear()
+                    allEvents.addAll(eventsList)
                 }
 
                 if (activity is AllEventsActivity) {
-                    allEvents = eventsList
-                    activity.populateEventsListToUI(eventsList)
+
+                    val events= ArrayList<Event>()
+                    events.addAll(eventsList)
+                    activity.populateEventsListToUI(events)
                 }
                 if(activity is SearchOnMapActivity){
-                    allEvents = eventsList
+                    allEvents.clear()
+                    allEvents.addAll(eventsList)
                     activity.setMarkers(eventsList)
                 }
             }.addOnFailureListener { e ->
@@ -309,7 +314,7 @@ class FirestoreClass {
             }.addOnFailureListener { e ->
 
                 activity.hideProgressDialog()
-                Log.e(activity.javaClass.simpleName, "Error while showing events! ")
+                Log.e(activity.javaClass.simpleName, "Error while getting event details! ")
             }
     }
 
@@ -330,7 +335,7 @@ class FirestoreClass {
             }.addOnFailureListener { e ->
 
                 activity.hideProgressDialog()
-                Log.e(activity.javaClass.simpleName, "Error while showing events! ")
+                Log.e(activity.javaClass.simpleName, "Error getting member list! ")
             }
     }
 
@@ -355,7 +360,7 @@ class FirestoreClass {
             }
             .addOnFailureListener { e ->
                 activity.hideProgressDialog()
-                Log.e(activity.javaClass.simpleName, "Error while creating a board.", e)
+                Log.e(activity.javaClass.simpleName, "Error while updating member list.", e)
             }
     }
 
@@ -375,30 +380,7 @@ class FirestoreClass {
             }.addOnFailureListener { e ->
 
                 activity.hideProgressDialog()
-                Log.e(activity.javaClass.simpleName, "Error while showing events! ")
-            }
-    }
-
-    fun saveFilters(activity: AllEventsActivity, lastFilters: LastFilters) {
-
-        mFireStore.collection(Constants.LASTFILTERS)
-            .document()
-            .set(lastFilters, SetOptions.merge())
-            .addOnSuccessListener {
-                Log.e(activity.javaClass.simpleName, "Last filters added successfully.")
-
-                Toast.makeText(activity, "Last filters added successfully.", Toast.LENGTH_SHORT)
-                    .show()
-
-                activity.lastFiltersAddedSuccessfully()
-            }
-            .addOnFailureListener { e ->
-                activity.hideProgressDialog()
-                Log.e(
-                    activity.javaClass.simpleName,
-                    "Error while adding a sport.",
-                    e
-                )
+                Log.e(activity.javaClass.simpleName, "Error while showing sport details! ")
             }
     }
 
@@ -426,8 +408,6 @@ class FirestoreClass {
             .addOnSuccessListener {
                 Log.e(activity.javaClass.simpleName, "Address added successfully.")
 
-                Toast.makeText(activity, "Address added successfully.", Toast.LENGTH_SHORT).show()
-
                 if(activity is SignUpActivity) {
                     activity.userRegisteredSuccess()
                 }
@@ -436,7 +416,7 @@ class FirestoreClass {
                 activity.hideProgressDialog()
                 Log.e(
                     activity.javaClass.simpleName,
-                    "Error while adding a sport.",
+                    "Error while adding an address.",
                     e
                 )
             }
@@ -475,6 +455,12 @@ class FirestoreClass {
                     isUserAdmin = true
                 }
 
+            }.addOnFailureListener { e ->
+                Log.e(
+                    activity.javaClass.simpleName,
+                    "Error while checking if user is admin",
+                    e
+                )
             }
     }
 
@@ -498,7 +484,34 @@ class FirestoreClass {
         })
     }
 
+    fun checkIfLoginIsAlreadyInUse(activity: SignUpActivity, login: String) {
+        mFireStore.collection(Constants.USERS)
+            .get()
+            .addOnSuccessListener { document ->
+                Log.i(activity.javaClass.simpleName, document.documents.toString())
+                var loginFound = false
+                for (i in document.documents) {
+                    val user = i.toObject(User::class.java)!!
+                    if (user.login.equals(login, ignoreCase = true)) {
+                        loginFound = true
+                    }
+                }
+                if(!loginFound){
+                    activity.registerUser()
+                }
+                else{
+                    activity.showErrorSnackBar("Provided login is already in use")
+                }
 
+            }
+            .addOnFailureListener { e ->
+                Log.e(
+                    activity.javaClass.simpleName,
+                    "Error while checking if login is in use",
+                    e
+                )
+            }
+    }
 
 
 }

@@ -19,9 +19,6 @@ class SplashActivity : AppCompatActivity() {
             LayoutParams.FLAG_FULLSCREEN
         )
 
-      //val typeface: Typeface = Typeface.createFromAsset(assets, "carbon bl.ttf")
-       //tv_app_name.typeface = typeface
-
         Handler().postDelayed({
 
             var currentUserID = FirestoreClass().getCurrentUserID()
@@ -32,8 +29,5 @@ class SplashActivity : AppCompatActivity() {
             }
             finish()
         }, 2500)
-
-
-
     }
 }

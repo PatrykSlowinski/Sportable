@@ -2,10 +2,12 @@ package com.example.sportable.activities
 
 import android.app.Activity
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -75,7 +77,6 @@ class MyEventsActivity : BaseActivity() {
             eventsCreatedByList.sortBy { it.date }
 
             cv_my_events_created.visibility = View.VISIBLE
-            //tv_no_e.visibility = View.GONE
 
             var layoutManager = LinearLayoutManager(this)
             layoutManager.orientation = LinearLayoutManager.HORIZONTAL
@@ -97,7 +98,6 @@ class MyEventsActivity : BaseActivity() {
             })
         }else{
             cv_my_events_created.visibility = View.INVISIBLE
-            //tv_no_sports.visibility = View.VISIBLE
             val params = cv_my_events_joined.layoutParams as ConstraintLayout.LayoutParams
             params.topToTop= cl_my_events.id
             cv_my_events_joined.requestLayout()
@@ -106,7 +106,6 @@ class MyEventsActivity : BaseActivity() {
         if(eventsJoinedList.size > 0){
             eventsJoinedList.sortBy { it.date }
             cv_my_events_joined.visibility = View.VISIBLE
-            //tv_no_e.visibility = View.GONE
 
             var layoutManager = LinearLayoutManager(this)
             layoutManager.orientation = LinearLayoutManager.HORIZONTAL

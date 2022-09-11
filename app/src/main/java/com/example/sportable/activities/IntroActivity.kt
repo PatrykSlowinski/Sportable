@@ -1,9 +1,11 @@
 package com.example.sportable.activities
 
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.WindowManager
+import androidx.annotation.RequiresApi
 import com.example.sportable.R
 import kotlinx.android.synthetic.main.activity_intro.*
 

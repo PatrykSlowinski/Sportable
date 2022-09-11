@@ -19,7 +19,10 @@ import kotlinx.android.synthetic.main.activity_add_sport.*
 import kotlinx.android.synthetic.main.activity_create_event.view.*
 import kotlinx.android.synthetic.main.activity_event_details.view.*
 import kotlinx.android.synthetic.main.item_event.view.*
+import kotlinx.android.synthetic.main.item_event.view.iv_event_image
+import kotlinx.android.synthetic.main.item_event.view.tv_sport_name
 import kotlinx.android.synthetic.main.item_member.view.*
+import kotlinx.android.synthetic.main.item_my_event.view.*
 import kotlinx.android.synthetic.main.item_sport.view.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -61,12 +64,14 @@ open class EventItemsAdapter(
             //if(position == list.size - 1){
                 //for myEventsActivity
                 holder.itemView.tv_sport_name.text = eventSportName
-                holder.itemView.tv_created_by.text = "Created by: ${model.createdBy}"
-                holder.itemView.tv_max_people.text = model.maxPeople.toString()
 
             val simpleDateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH)
             val selectedDate = simpleDateFormat.format(Date(model.date))
+            val simpleTimeFormat = SimpleDateFormat("HH:mm")
+            val selectedTime = simpleTimeFormat.format(Date(model.date))
             holder.itemView.tv_event_date.text = selectedDate
+            holder.itemView.tv_event_time.text = selectedTime
+            holder.itemView.tv_event_duration.text = "Duration(minutes): " + model.duration.toString()
 
                 //for EventDetailsActivity
 

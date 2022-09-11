@@ -12,8 +12,6 @@ import com.example.sportable.activities.BaseActivity
 import com.example.sportable.models.Event
 import kotlinx.android.synthetic.main.item_event.view.*
 import kotlinx.android.synthetic.main.item_event.view.iv_event_image
-import kotlinx.android.synthetic.main.item_event.view.tv_created_by
-import kotlinx.android.synthetic.main.item_event.view.tv_max_people
 import kotlinx.android.synthetic.main.item_event.view.tv_sport_name
 import kotlinx.android.synthetic.main.item_my_event.view.*
 import java.text.SimpleDateFormat
@@ -56,17 +54,18 @@ open class MyEventItemsAdapter (private val context: Context,
             //if(position == list.size - 1){
             //for myEventsActivity
             holder.itemView.tv_sport_name.text = eventSportName
-            holder.itemView.tv_created_by.text = "Created by: ${model.createdBy}"
-            holder.itemView.tv_max_people.text = model.maxPeople.toString()
 
             if(model.date<(calendar.timeInMillis +120*60*1000) && model.currentNumberOfPeople<model.minPeople){
                 holder.itemView.tv_cancelled_event.visibility = View.VISIBLE
             }
 
             val simpleDateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH)
+            val simpleTimeFormat = SimpleDateFormat("HH:mm")
             val selectedDate = simpleDateFormat.format(Date(model.date))
+            val selectedTime = simpleTimeFormat.format(Date(model.date))
             holder.itemView.tv_my_event_date.text = selectedDate
-
+            holder.itemView.tv_Time.text = selectedTime
+            holder.itemView.tv_myEvent_duration.text = "Duration(minutes): " + model.duration.toString()
             //for EventDetailsActivity
 
             holder.itemView.setOnClickListener{

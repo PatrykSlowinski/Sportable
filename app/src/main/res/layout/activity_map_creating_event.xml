@@ -66,5 +66,19 @@
         android:foreground="?attr/selectableItemBackground">
 
     </Button>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btn_map_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/mapCreating"
+        android:layout_alignEnd="@id/mapCreating"
+        android:backgroundTint="@color/white"
+        android:src="@drawable/iconsinfo"
+        android:layout_marginLeft="10sp"
+        android:layout_marginBottom="70sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

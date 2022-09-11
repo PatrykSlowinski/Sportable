@@ -2,11 +2,17 @@ package com.example.sportable.activities
 
 import android.app.Activity
 import android.content.Intent
+import android.net.ConnectivityManager
+import android.net.Network
+import android.net.NetworkCapabilities
+import android.net.NetworkRequest
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.core.view.GravityCompat
 import com.bumptech.glide.Glide
 import com.example.sportable.R
@@ -24,13 +30,14 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     companion object{
         const val MY_PROFILE_REQUEST_CODE : Int = 11
     }
-
     private lateinit var mUserLogin: String
 
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         FirestoreClass().isUserAdmin(this)
+        FirestoreClass().getAllEventsList(this)
         setupActionBar()
         FirestoreClass().getUserAddress(this)
         FirestoreClass().deleteOutdatedEvents(this)
@@ -38,9 +45,11 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         FirestoreClass().loadUserData(this)
         FirestoreClass().getSportsList(this)
 
+        showErrorSnackBar("This app requires internet connection to work properly. Always use it online.")
+
         fab_create_event.setOnClickListener{
             val intent = Intent(this, CreateEventActivity::class.java)
-            intent.putExtra(Constants.LOGIN, mUserLogin) //przekazuję użytkownika login do kolejnej aktywności
+            intent.putExtra(Constants.LOGIN, mUserLogin)
             startActivity(intent)
 
         }
